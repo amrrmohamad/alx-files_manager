@@ -16,7 +16,11 @@ class RedisClient {
     isAlive() {
         return this.client.connected;
     }
-
+	/**
+	 * Function - get: take relove and reject
+	 * 
+	 * Return : promise.
+	 */
     async get(key) {
         return new Promise((resolve, reject) => {
             this.client.get(key, (err, value) => {
@@ -28,6 +32,11 @@ class RedisClient {
             });
         });
     }
+	/**
+         * Function - set: take key, value, duration
+         *
+         * Return : promise.
+         */
 
     async set(key, value, duration) {
         return new Promise((resolve, reject) => {
@@ -40,6 +49,11 @@ class RedisClient {
             });
         });
     }
+	 /**
+         * Function - del: take key.
+         *
+         * Return : promise.
+         */
 
     async del(key) {
         return new Promise((resolve, reject) => {
