@@ -52,3 +52,30 @@ class UsersController {
 }
 
 module.exports = UsersController;
+
+const db = require('../db'); // Mocked DB module
+const userQueue = require('../worker'); // Worker queue
+
+async function createUser(req, res) {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Missing email or password' });
+    }
+
+    // Simulate saving user to DB
+    const userId = db.createUser({ email, password });
+
+    // Add a job to the userQueue
+    await userQueue.add({ userId });
+
+    res.status(201).json({ id: userId, email });
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}
+
+module.exports = {
+  createUser,
+};
